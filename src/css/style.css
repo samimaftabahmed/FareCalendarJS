@@ -1,0 +1,70 @@
+.weekends {
+    color: #d32f2f !important;
+}
+
+.dropdown-menu {
+    border: none;
+}
+
+.fare-calendar-container {
+    -webkit-box-shadow: 0 2px 18px -13px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0 2px 18px -13px rgba(0, 0, 0, 0.75);
+    box-shadow: 0 2px 18px -13px rgba(0, 0, 0, 0.75);
+
+    padding: .05rem .25rem .25rem;
+}
+
+.fare-calendar-container tr:first-child td {
+    font-weight: bold;
+    border: none;
+}
+
+.fare-calendar-container td {
+    height: 3rem;
+    width: 2.7rem;
+    font-size: .9rem;
+    text-align: center;
+    color: black;
+    background-color: white;
+    border-top: 1px solid #dddddd;
+    /*border: 1px solid black;*/
+}
+
+.fare-calendar-container td:hover {
+    color: white;
+    background-color: #1E88E5;
+}
+
+/* ----------- Non Retina and upto Full HD Screens ----------- */
+@media screen
+and (min-device-width: 1600px)
+and (-webkit-min-device-pixel-ratio: 1) {
+
+    .fare-calendar-container {
+        padding: .1rem .5rem .5rem;
+    }
+
+    .fare-calendar-container td {
+        height: 4rem;
+        width: 3.5rem;
+        font-size: 1.1rem;
+        text-align: center;
+        /*border: 1px solid black;*/
+    }
+}
+
+/* ----------- Retina Screens ----------- */
+@media screen
+and (min-device-width: 1200px)
+and (max-device-width: 1600px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (min-resolution: 192dpi) {
+
+    .fare-calendar-container {
+
+    }
+
+    .fare-calendar-container td {
+
+    }
+}
