@@ -16,10 +16,12 @@
 
     <!--    JAVASCRIPT TEST SECTION  -->
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-6 offset-3 text-center">
             <br>
             <br>
             <br>
+            <br>
+            Fare Calendar JS in development phase
             <br>
             <br>
             <div class="fare-calendar">
@@ -29,7 +31,28 @@
                            aria-expanded="false" aria-haspopup="true" data-display="static" data-toggle="dropdown">
 
                     <div aria-labelledby="calendarDropdown" class="dropdown-menu" id="dm">
-                        <div class="fare-calendar-container" id="cal">
+                        <div class="fare-calendar-container">
+
+                            <div class="calendar-header">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <img src="img/arrow.svg" alt="previous month" class="img-fluid img-btn rotate">
+                                    </div>
+                                    <div class="col-8 text-center">
+                                        <div class="font-size-2 font-weight-bold center-absolute">
+                                            <span id="current-month">November</span>,
+                                            <span id="current-year">2019</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <img src="img/arrow.svg" alt="next month" class="img-fluid img-btn right-align">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fare-calendar" id="cal">
+
+                            </div>
 
                         </div>
                     </div>
@@ -37,9 +60,18 @@
                 <!-- dropdown ends -->
             </div>
             <!-- fare-calendar ends -->
+            <br>
+            <br>
+            <br>
+            <br>
+            <div>Icons made by <a href="https://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a> from <a
+                    href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         </div>
+        <!-- col ends -->
     </div>
+    <!-- row ends -->
 </div>
+<!-- container ends -->
 
 
 <script type="text/javascript" src="js/jquery-slim.min.js"></script>

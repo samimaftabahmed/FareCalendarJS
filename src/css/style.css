@@ -6,11 +6,54 @@
     border: none;
 }
 
-.fare-calendar-container {
-    -webkit-box-shadow: 0 2px 18px -13px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0 2px 18px -13px rgba(0, 0, 0, 0.75);
-    box-shadow: 0 2px 18px -13px rgba(0, 0, 0, 0.75);
+.right-align {
+    text-align: right;
+}
 
+.td-disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
+
+.date-disabled {
+    color: #555555;
+    background-color: #eeeeee;
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
+
+.prev-month-date-disabled {
+    color: #555555;
+    background-color: #dddddd;
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
+
+.font-size-2 {
+    font-size: 1.3rem;
+}
+
+.center-absolute {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    position: absolute;
+}
+
+.img-btn {
+    padding: .5rem;
+    filter: invert(43%) sepia(30%) saturate(4178%) hue-rotate(191deg) brightness(84%) contrast(95%);
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+.fare-calendar-container {
+    -webkit-box-shadow: 0 0px 18px -13px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0 0px 18px -13px rgba(0, 0, 0, 0.75);
+    box-shadow: 0 0px 18px -13px rgba(0, 0, 0, 0.75);
     padding: .05rem .25rem .25rem;
 }
 
