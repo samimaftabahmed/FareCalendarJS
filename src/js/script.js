@@ -3,30 +3,27 @@ window.onload = function () {
     dateCalculator(moment(), "", "cal");
 };
 
+
 function dateCalculator(startMomentDate, referredBy, calendarId) {
 
-    // let startMomentDate = moment();
-
-    // let month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    // let month = startMomentDate.months(); //0-11 7
-    // let year = startMomentDate.year(); //2014
-
-    // let first_date = month_name[month] + " " + 1 + " " + year;
-
-    // let tmp = new Date(first_date).toDateString(); //Mon Sep 01 2014 ...
-    // let first_day = tmp.substring(0, 3); //Mon
-    // let day_name = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    // let days = new Date(year, month + 1, 0).getDate(); //30
-
     startMomentDate = moment().set('date', 1);
-    let firstDateDay = startMomentDate.day();
-    let totalDays = startMomentDate.endOf('month').date();
+    document.getElementById("current-month").innerText = startMomentDate.format("MMMM");
+    document.getElementById("current-year").innerText = startMomentDate.format("YYYY");
 
-    let fareCalendar = renderCalendar(firstDateDay, totalDays, "", moment());
+    let fareCalendar = renderCalendar(startMomentDate, "", moment());
     document.getElementById(calendarId).appendChild(fareCalendar);
 }
 
-function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate) {
+
+function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
+
+    let temporaryMoment = moment(startMomentDate);
+    zeroTimedMoment(temporaryMoment);
+    zeroTimedMoment(startMomentDate);
+    zeroTimedMoment(toCompareMomentDate);
+
+    let firstDateDay = startMomentDate.day();
+    let totalDays = startMomentDate.endOf('month').date();
 
     let table = document.createElement("table");
     let tr = document.createElement("tr");
@@ -45,6 +42,8 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate
 
         if (td.innerHTML === "Su" || td.innerHTML === "Sa") {
             td.className = "weekends";
+        } else {
+            td.className = "day";
         }
 
         tr.appendChild(td);
@@ -52,21 +51,36 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate
 
     table.appendChild(tr);
 
+    //create 2nd row with previous month dates
+    let prevMonthMoment = moment(startMomentDate);
+    prevMonthMoment.subtract(1, "month");
+    let lastMonthLastWeekStartDate = prevMonthMoment.endOf("month").date() - firstDateDay + 1;
 
-
-    //create 2nd row
     tr = document.createElement('tr');
     let c;
     for (c = 0; c <= 6; c++) {
         if (c === firstDateDay) {
             break;
         }
+
         let td = document.createElement('td');
-        td.innerHTML = "";
-        td.className = "table-top-border"; // todo
+        let spanDate = document.createElement('span');
+        let spanPrice = document.createElement('span');
+        let br = document.createElement('br');
+
+        spanDate.innerHTML = "" + lastMonthLastWeekStartDate;
+        spanPrice.innerHTML = "&nbsp;";
+
+        td.appendChild(spanDate);
+        td.appendChild(br);
+        td.appendChild(spanPrice);
+
+        lastMonthLastWeekStartDate++;
+        td.className = "table-top-border date-disabled";
         tr.appendChild(td);
     }
 
+    // staring dates on 2nd row
     let count = 1;
     for (; c <= 6; c++) {
         let td = document.createElement('td');
@@ -88,12 +102,12 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate
         if (count === toCompareMomentDate.date()) {
             td.className += todayDate;
 
-        } else if (isDateLessThanSomeDate(count, toCompareMomentDate, referredBy)) {
+        } else if (isDateLessThanSomeDate(temporaryMoment, toCompareMomentDate)) {
             td.className += dateDisabled;
 
         } else {
 
-            // td.className += allowedDate;
+            td.className += allowedDate;
 
             td.onclick = function () {
 
@@ -101,6 +115,7 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate
         }
 
         count++;
+        temporaryMoment.add(1, 'day');
         tr.appendChild(td);
     }
 
@@ -137,12 +152,12 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate
             if (count === toCompareMomentDate.date()) {
                 td.className += todayDate;
 
-            } else if (isDateLessThanSomeDate(count, toCompareMomentDate, referredBy)) {
+            } else if (isDateLessThanSomeDate(temporaryMoment, toCompareMomentDate)) {
                 td.className += dateDisabled;
 
             } else {
 
-                // td.className += allowedDate;
+                td.className += allowedDate;
 
                 td.onclick = function () {
 
@@ -150,6 +165,7 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate
             }
 
             count++;
+            temporaryMoment.add(1, 'day');
             tr.appendChild(td);
         }
 
@@ -160,7 +176,28 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate
 }
 
 
-function isDateLessThanSomeDate(currentDate, toCompareMomentDate) {
+function isDateLessThanSomeDate(currentMoment, toCompareMomentDate) {
 
-    return currentDate < toCompareMomentDate.date();
+    return currentMoment.isBefore(toCompareMomentDate);
+}
+
+
+function nextMonth(currentMonthMoment) {
+    let nextMoment = moment(currentMonthMoment).add(1, "month");
+    // call  calendar renderer
+}
+
+
+function previousMonth(currentMonthMoment) {
+    let previousMoment = moment(currentMonthMoment).subtract(1, "month");
+    // call  calendar renderer
+}
+
+
+function zeroTimedMoment(currentMoment) {
+
+    currentMoment.set("hour", 0);
+    currentMoment.set("minute", 0);
+    currentMoment.set("second", 0);
+    currentMoment.set("millisecond", 0);
 }
