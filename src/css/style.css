@@ -15,16 +15,21 @@
     pointer-events: all !important;
 }
 
+.today-date{
+    color: white !important;
+    background-color: #1E88E5 !important;
+}
+
 .date-disabled {
-    color: #555555;
-    background-color: #eeeeee;
-    cursor: not-allowed;
+    color: #777777 !important;
+    background-color: #f4f4f4 !important;
+    cursor: not-allowed !important;
     pointer-events: all !important;
 }
 
 .prev-month-date-disabled {
     color: #555555;
-    background-color: #dddddd;
+    background-color: #eeeeee;
     cursor: not-allowed;
     pointer-events: all !important;
 }

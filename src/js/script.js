@@ -22,17 +22,18 @@ function dateCalculator(startMomentDate, referredBy, calendarId) {
     let firstDateDay = startMomentDate.day();
     let totalDays = startMomentDate.endOf('month').date();
 
-    let fareCalendar = renderCalendar(firstDateDay, totalDays, "", null);
+    let fareCalendar = renderCalendar(firstDateDay, totalDays, "", moment());
     document.getElementById(calendarId).appendChild(fareCalendar);
 }
 
-function renderCalendar(firstDateDay, totalDays, referredBy, toCompareDate) {
+function renderCalendar(firstDateDay, totalDays, referredBy, toCompareMomentDate) {
 
     let table = document.createElement("table");
     let tr = document.createElement("tr");
 
     let dateDisabled = " date-disabled";
     let allowedDate = " date-allowed";
+    let todayDate = " today-date";
 
     //row for the day letters
     for (let c = 0; c <= 6; c++) {
@@ -50,6 +51,8 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareDate) {
     }
 
     table.appendChild(tr);
+
+
 
     //create 2nd row
     tr = document.createElement('tr');
@@ -82,30 +85,22 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareDate) {
 
         td.className = "table-top-border";
 
-        // isDateLessThanSomeDate(count, iterativeDate)
+        if (count === toCompareMomentDate.date()) {
+            td.className += todayDate;
 
-        // if (isDateLessThanSomeDate(count, toCompareDate, referredBy)) {
-        //
-        //     td.className += dateDisabled;
-        //
-        // } else {
-        //
-        //     td.className += allowedDate;
-        //
-        //     let onlyDate = count;
-        //
-        //     let zeroedCount = "";
-        //     if (count < 10) {
-        //         zeroedCount = "0";
-        //     }
-        //
-        //     td.onclick = function () {
-        //         dateSelected(zeroedCount + onlyDate, referredBy, zangStatus);
-        //     }
-        // }
+        } else if (isDateLessThanSomeDate(count, toCompareMomentDate, referredBy)) {
+            td.className += dateDisabled;
+
+        } else {
+
+            // td.className += allowedDate;
+
+            td.onclick = function () {
+
+            }
+        }
 
         count++;
-
         tr.appendChild(td);
     }
 
@@ -139,7 +134,20 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareDate) {
 
             td.className = "table-top-border";
 
-            // isDateLessThanSomeDate(count, iterativeDate)
+            if (count === toCompareMomentDate.date()) {
+                td.className += todayDate;
+
+            } else if (isDateLessThanSomeDate(count, toCompareMomentDate, referredBy)) {
+                td.className += dateDisabled;
+
+            } else {
+
+                // td.className += allowedDate;
+
+                td.onclick = function () {
+
+                }
+            }
 
             count++;
             tr.appendChild(td);
@@ -149,4 +157,10 @@ function renderCalendar(firstDateDay, totalDays, referredBy, toCompareDate) {
     }
 
     return table;
+}
+
+
+function isDateLessThanSomeDate(currentDate, toCompareMomentDate) {
+
+    return currentDate < toCompareMomentDate.date();
 }
