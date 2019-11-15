@@ -18,9 +18,9 @@
 }
 
 .today-date {
-    color: #555555 !important;
+    color: black !important;
     font-weight: bold;
-    background-color: #B2EBF2 !important;
+    background-color: #eeeeee !important;
 }
 
 .date-disabled {

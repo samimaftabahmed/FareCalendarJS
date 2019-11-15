@@ -13,6 +13,7 @@ window.onload = function () {
 
     zeroTimedMoment(onloadMoment);
     zeroTimedMoment(toCompareMomentDate);
+    firstDateSetter(onloadMoment);
 
     dateCalculator(onloadMoment, "", "cal", toCompareMomentDate);
 };
@@ -20,11 +21,11 @@ window.onload = function () {
 
 function dateCalculator(startMomentDate, referredBy, calendarId, toCompareMomentDate) {
 
-    startMomentDate.set('date', 1);
-    console.log(startMomentDate.format());
+    console.log("DC " + startMomentDate.format());
     document.getElementById("current-month").innerText = startMomentDate.format("MMMM");
     document.getElementById("current-year").innerText = startMomentDate.format("YYYY");
 
+    console.log("DC2 " + startMomentDate.format());
     let fareCalendar = renderCalendar(startMomentDate, "", toCompareMomentDate);
     document.getElementById(calendarId).innerHTML = "";
     document.getElementById(calendarId).appendChild(fareCalendar);
@@ -97,8 +98,20 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
     // staring dates on 2nd row
     let count = 1;
     for (; c <= 6; c++) {
+        let td = document.createElement('td');
+        let spanDate = document.createElement('span');
+        let spanPrice = document.createElement('span');
+        let br = document.createElement('br');
 
-        let td = getTableTd(referredBy, count);
+        spanDate.innerHTML = "" + count;
+        spanPrice.className = "fare-sty";
+        spanPrice.id = "fare" + referredBy + "-" + count;
+        spanPrice.innerHTML = "&nbsp;";
+
+        td.appendChild(spanDate);
+        td.appendChild(br);
+        td.appendChild(spanPrice);
+
         td.className = "table-top-border";
 
         if (count === toCompareMomentDate.date()) {
@@ -131,11 +144,24 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
         for (let c = 0; c <= 6; c++) {
 
             if (count > totalDays) {
+                // break;
                 table.appendChild(tr);
                 return table;
             }
 
-            let td = getTableTd(referredBy, count);
+            let td = document.createElement('td');
+            let spanDate = document.createElement('span');
+            let spanPrice = document.createElement('span');
+            let br = document.createElement('br');
+
+            spanDate.innerHTML = "" + count;
+            spanPrice.className = "fare-sty";
+            spanPrice.id = "fare" + referredBy + "-" + count;
+            spanPrice.innerHTML = "&nbsp;";
+
+            td.appendChild(spanDate);
+            td.appendChild(br);
+            td.appendChild(spanPrice);
 
             td.className = "table-top-border";
 
@@ -159,6 +185,7 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
             tr.appendChild(td);
         }
 
+        // for ()
         table.appendChild(tr);
     }
 
@@ -175,6 +202,9 @@ function isDateLessThanSomeDate(currentMoment, toCompareMomentDate) {
 function nextMonth() {
     fareCalendarMoment.add(1, "month");
     let nextMoment = moment(fareCalendarMoment);
+
+    console.log("MAIN " + nextMoment.format());
+    // call  calendar renderer
     dateCalculator(nextMoment, "", "cal", moment());
 }
 
@@ -182,6 +212,9 @@ function nextMonth() {
 function previousMonth() {
     fareCalendarMoment.subtract(1, "month");
     let previousMoment = moment(fareCalendarMoment);
+
+    console.log("MAIN " + previousMoment.format());
+    // call  calendar renderer
     dateCalculator(previousMoment, "", "cal", moment());
 }
 
@@ -195,21 +228,6 @@ function zeroTimedMoment(currentMoment) {
 }
 
 
-function getTableTd(referredBy, count) {
-
-    let td = document.createElement('td');
-    let spanDate = document.createElement('span');
-    let spanPrice = document.createElement('span');
-    let br = document.createElement('br');
-
-    spanDate.innerHTML = "" + count;
-    spanPrice.className = "fare-sty";
-    spanPrice.id = "fare" + referredBy + "-" + count;
-    spanPrice.innerHTML = "&nbsp;";
-
-    td.appendChild(spanDate);
-    td.appendChild(br);
-    td.appendChild(spanPrice);
-
-    return td;
+function firstDateSetter(currentMoment) {
+    currentMoment.set(1, "date");
 }
