@@ -42,10 +42,6 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
     let table = document.createElement("table");
     let tr = document.createElement("tr");
 
-    let dateDisabled = " date-disabled";
-    let allowedDate = " date-allowed";
-    let todayDate = " today-date";
-
     //row for the day letters
     for (let c = 0; c <= 6; c++) {
         let td = document.createElement("td");
@@ -101,20 +97,7 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
         let td = getTableTd(referredBy, count);
         td.className = "table-top-border";
 
-        if (count === toCompareMomentDate.date()) {
-            td.className += todayDate;
-
-        } else if (isDateLessThanSomeDate(temporaryMoment, toCompareMomentDate)) {
-            td.className += dateDisabled;
-
-        } else {
-
-            td.className += allowedDate;
-
-            td.onclick = function () {
-
-            }
-        }
+        tdClassAdder(count, toCompareMomentDate, td, temporaryMoment);
 
         count++;
         temporaryMoment.add(1, 'day');
@@ -136,23 +119,9 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
             }
 
             let td = getTableTd(referredBy, count);
-
             td.className = "table-top-border";
 
-            if (count === toCompareMomentDate.date()) {
-                td.className += todayDate;
-
-            } else if (isDateLessThanSomeDate(temporaryMoment, toCompareMomentDate)) {
-                td.className += dateDisabled;
-
-            } else {
-
-                td.className += allowedDate;
-
-                td.onclick = function () {
-
-                }
-            }
+            tdClassAdder(count, toCompareMomentDate, td, temporaryMoment);
 
             count++;
             temporaryMoment.add(1, 'day');
@@ -212,4 +181,30 @@ function getTableTd(referredBy, count) {
     td.appendChild(spanPrice);
 
     return td;
+}
+
+
+function tdClassAdder(count, toCompareMomentDate, td, temporaryMoment) {
+
+    let dateDisabled = " date-disabled";
+    let allowedDate = " date-allowed";
+    let todayDate = " today-date";
+
+    if (temporaryMoment.month() === toCompareMomentDate.month() &&
+        temporaryMoment.year() === toCompareMomentDate.year() &&
+        count === toCompareMomentDate.date()) {
+
+        td.className += todayDate;
+
+    } else if (isDateLessThanSomeDate(temporaryMoment, toCompareMomentDate)) {
+        td.className += dateDisabled;
+
+    } else {
+
+        td.className += allowedDate;
+
+        td.onclick = function () {
+
+        }
+    }
 }
