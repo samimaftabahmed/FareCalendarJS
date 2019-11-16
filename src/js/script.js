@@ -1,8 +1,10 @@
 let fareCalendarMoment;
 
+
 $(document).on('click', '.fare-calendar > div > .dropdown-menu', function (e) {
     e.stopPropagation();
 });
+
 
 window.onload = function () {
 
