@@ -21,7 +21,6 @@ window.onload = function () {
 function dateCalculator(startMomentDate, referredBy, calendarId, toCompareMomentDate) {
 
     startMomentDate.set('date', 1);
-    console.log(startMomentDate.format());
     document.getElementById("current-month").innerText = startMomentDate.format("MMMM");
     document.getElementById("current-year").innerText = startMomentDate.format("YYYY");
 
@@ -73,20 +72,9 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
             break;
         }
 
-        let td = document.createElement('td');
-        let spanDate = document.createElement('span');
-        let spanPrice = document.createElement('span');
-        let br = document.createElement('br');
-
-        spanDate.innerHTML = "" + lastMonthLastWeekStartDate;
-        spanPrice.innerHTML = "&nbsp;";
-
-        td.appendChild(spanDate);
-        td.appendChild(br);
-        td.appendChild(spanPrice);
-
-        lastMonthLastWeekStartDate++;
+        let td = getTableTd(referredBy, lastMonthLastWeekStartDate, false);
         td.className = "table-top-border date-disabled";
+        lastMonthLastWeekStartDate++;
         tr.appendChild(td);
     }
 
@@ -94,7 +82,7 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
     let count = 1;
     for (; c <= 6; c++) {
 
-        let td = getTableTd(referredBy, count);
+        let td = getTableTd(referredBy, count, true);
         td.className = "table-top-border";
 
         tdClassAdder(count, toCompareMomentDate, td, temporaryMoment);
@@ -107,18 +95,26 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
     table.appendChild(tr);
 
     //rest of the date rows
+    let monthEndSaturday = false;
+
     for (let r = 3; r <= 7; r++) {
 
         tr = document.createElement('tr');
 
-        for (let c = 0; c <= 6; c++) {
+        let nextMonthDate = 1;
+
+        let w = 0;
+        for (; w <= 6; w++) {
 
             if (count > totalDays) {
-                table.appendChild(tr);
-                return table;
+
+                if (w === 0) {
+                    monthEndSaturday = true;
+                }
+                break;
             }
 
-            let td = getTableTd(referredBy, count);
+            let td = getTableTd(referredBy, count, true);
             td.className = "table-top-border";
 
             tdClassAdder(count, toCompareMomentDate, td, temporaryMoment);
@@ -126,6 +122,26 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
             count++;
             temporaryMoment.add(1, 'day');
             tr.appendChild(td);
+        }
+
+        // next month dates on last empty cells
+        for (; w <= 6; w++) {
+
+            if (monthEndSaturday) {
+                return table;
+            }
+
+            let td = getTableTd(referredBy, nextMonthDate, false);
+            td.className = "table-top-border date-disabled";
+            tr.appendChild(td);
+
+            nextMonthDate++;
+
+            if (w === 6) {
+
+                table.appendChild(tr);
+                return table;
+            }
         }
 
         table.appendChild(tr);
@@ -164,17 +180,25 @@ function zeroTimedMoment(currentMoment) {
 }
 
 
-function getTableTd(referredBy, count) {
+function getTableTd(referredBy, dateOnly, isCurrentMonth) {
 
     let td = document.createElement('td');
     let spanDate = document.createElement('span');
     let spanPrice = document.createElement('span');
     let br = document.createElement('br');
 
-    spanDate.innerHTML = "" + count;
-    spanPrice.className = "fare-sty";
-    spanPrice.id = "fare" + referredBy + "-" + count;
-    spanPrice.innerHTML = "&nbsp;";
+    if (isCurrentMonth) {
+
+        spanDate.innerHTML = "" + dateOnly;
+        spanPrice.className = "fare-sty";
+        spanPrice.id = "fare" + referredBy + "-" + dateOnly;
+        spanPrice.innerHTML = "&nbsp;";
+
+    } else {
+        spanDate.innerHTML = "" + dateOnly;
+        spanPrice.innerHTML = "&nbsp;";
+    }
+
 
     td.appendChild(spanDate);
     td.appendChild(br);
