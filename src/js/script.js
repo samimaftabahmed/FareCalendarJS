@@ -16,19 +16,33 @@ window.onload = function () {
     zeroTimedMoment(onloadMoment);
     zeroTimedMoment(toCompareMomentDate);
 
-    dateCalculator(onloadMoment, "", "cal", toCompareMomentDate);
+    let calendarParams = {
+        startDate: onloadMoment.format("DD-MM-YYYY"),
+        minimumDate: moment().format("DD-MM-YYYY"),
+        maximumDate: "",
+        calendarId: "cal",
+        referredBy: "",
+        toCompareMomentDate: toCompareMomentDate.format("DD-MM-YYYY")
+    };
+
+    fareCalendarGenerator(calendarParams);
 };
 
 
-function dateCalculator(startMomentDate, referredBy, calendarId, toCompareMomentDate) {
+function fareCalendarGenerator(calendarParams) {
+
+    let startMomentDate = moment(calendarParams.startDate, "DD-MM-YYYY");
+    let toCompareMomentDate = moment(calendarParams.toCompareMomentDate, "DD-MM-YYYY");
+
+    console.log("compare " + toCompareMomentDate.toDate());
 
     startMomentDate.set('date', 1);
     document.getElementById("current-month").innerText = startMomentDate.format("MMMM");
     document.getElementById("current-year").innerText = startMomentDate.format("YYYY");
 
-    let fareCalendar = renderCalendar(startMomentDate, "", toCompareMomentDate);
-    document.getElementById(calendarId).innerHTML = "";
-    document.getElementById(calendarId).appendChild(fareCalendar);
+    let fareCalendar = renderCalendar(startMomentDate, calendarParams.referredBy, toCompareMomentDate);
+    document.getElementById(calendarParams.calendarId).innerHTML = "";
+    document.getElementById(calendarParams.calendarId).appendChild(fareCalendar);
 }
 
 
@@ -126,12 +140,12 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
             tr.appendChild(td);
         }
 
+        if (monthEndSaturday) {
+            return table;
+        }
+
         // next month dates on last empty cells
         for (; w <= 6; w++) {
-
-            if (monthEndSaturday) {
-                return table;
-            }
 
             let td = getTableTd(referredBy, nextMonthDate, false);
             td.className = "table-top-border date-disabled";
@@ -140,7 +154,6 @@ function renderCalendar(startMomentDate, referredBy, toCompareMomentDate) {
             nextMonthDate++;
 
             if (w === 6) {
-
                 table.appendChild(tr);
                 return table;
             }
@@ -160,16 +173,42 @@ function isDateLessThanSomeDate(currentMoment, toCompareMomentDate) {
 
 
 function nextMonth() {
+
     fareCalendarMoment.add(1, "month");
-    let nextMoment = moment(fareCalendarMoment);
-    dateCalculator(nextMoment, "", "cal", moment());
+    let nextMonth = moment(fareCalendarMoment);
+
+    let calendarParams = {
+        startDate: nextMonth.format("DD-MM-YYYY"),
+        minimumDate: moment().format("DD-MM-YYYY"),
+        maximumDate: "",
+        calendarId: "cal",
+        referredBy: "",
+        toCompareMomentDate: moment().format("DD-MM-YYYY")
+    };
+
+    console.log(fareCalendarMoment.toDate());
+
+    fareCalendarGenerator(calendarParams);
 }
 
 
 function previousMonth() {
+
     fareCalendarMoment.subtract(1, "month");
     let previousMoment = moment(fareCalendarMoment);
-    dateCalculator(previousMoment, "", "cal", moment());
+
+    let calendarParams = {
+        startDate: previousMoment.format("DD-MM-YYYY"),
+        minimumDate: moment().format("DD-MM-YYYY"),
+        maximumDate: "",
+        calendarId: "cal",
+        referredBy: "",
+        toCompareMomentDate: moment().format("DD-MM-YYYY")
+    };
+
+    console.log(fareCalendarMoment.toDate());
+
+    fareCalendarGenerator(calendarParams);
 }
 
 
@@ -222,7 +261,8 @@ function tdClassAdder(count, toCompareMomentDate, td, temporaryMoment) {
 
         td.className += todayDate;
 
-    } else if (isDateLessThanSomeDate(temporaryMoment, toCompareMomentDate)) {
+    } else if (temporaryMoment.isBefore(toCompareMomentDate)) {
+
         td.className += dateDisabled;
 
     } else {
