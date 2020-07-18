@@ -8,7 +8,7 @@ $(document).on('click', '.fare-calendar > div > .dropdown-menu', function (e) {
 
 window.onload = function () {
 
-    getFareApi()
+    getFareApi("");
 
     fareCalendarMoment = moment();
 
@@ -191,6 +191,7 @@ function nextMonth() {
     console.log(fareCalendarMoment.toDate());
 
     fareCalendarGenerator(calendarParams);
+    getFareApi("");
 }
 
 
@@ -211,6 +212,7 @@ function previousMonth() {
     console.log(fareCalendarMoment.toDate());
 
     fareCalendarGenerator(calendarParams);
+    getFareApi("");
 }
 
 
@@ -277,19 +279,33 @@ function tdClassAdder(count, toCompareMomentDate, td, temporaryMoment) {
     }
 }
 
-function getFareApi() {
+function getFareApi(referredBy) {
     axios.get('https://raw.githubusercontent.com/samimaftabahmed/FareCalendarJS/master/src/api/api-format')
         .then(function (response) {
             // handle success
             console.log("success");
-            console.log(response);
+            populatePrice(response, referredBy)
         })
         .catch(function (error) {
             // handle error
-            console.log("error");
             console.log(error);
         })
         .then(function () {
             // always executed
         });
+}
+
+function populatePrice(response, referredBy) {
+
+    let responseData = response.data.Fares;
+
+    for (let i in responseData) {
+        try {
+            let id = "fare" + referredBy + "-" + responseData[i].date;
+            document.getElementById(id).innerHTML = responseData[i].price;
+        } catch (err) {
+            throw "kiba kibi";
+            // console.log(err);
+        }
+    }
 }
