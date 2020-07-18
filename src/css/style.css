@@ -42,7 +42,7 @@
 }
 
 .img-btn {
-    padding: .5rem;
+    padding: 3px;
     filter: invert(43%) sepia(30%) saturate(4178%) hue-rotate(191deg) brightness(84%) contrast(95%);
 }
 
@@ -104,6 +104,9 @@ and (-webkit-min-device-pixel-ratio: 1) {
         text-align: center;
         /*border: 1px solid black;*/
     }
+    .img-btn {
+        padding: 6px;
+    }
 }
 
 /* ----------- Retina Screens ----------- */
@@ -119,5 +122,9 @@ and (min-resolution: 192dpi) {
 
     .fare-calendar-container td {
 
+    }
+
+    .img-btn {
+        padding: 12px;
     }
 }
