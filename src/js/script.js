@@ -8,6 +8,8 @@ $(document).on('click', '.fare-calendar > div > .dropdown-menu', function (e) {
 
 window.onload = function () {
 
+    getFareApi()
+
     fareCalendarMoment = moment();
 
     let onloadMoment = moment(fareCalendarMoment);
@@ -273,4 +275,21 @@ function tdClassAdder(count, toCompareMomentDate, td, temporaryMoment) {
 
         }
     }
+}
+
+function getFareApi() {
+    axios.get('https://raw.githubusercontent.com/samimaftabahmed/FareCalendarJS/master/src/api/api-format')
+        .then(function (response) {
+            // handle success
+            console.log("success");
+            console.log(response);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log("error");
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
+        });
 }
